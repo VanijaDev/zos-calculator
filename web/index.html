@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script type="text/javascript" src="lib/getTransactionReceiptMined.js"></script>
+    <script type="text/javascript">
+        web3.eth.getTransactionReceiptMined = getTransactionReceiptMined;
+
+        /**
+         * MetaMask
+         */
+
+        // if (web3 === "undefined") {
+        //     console.log("web3 == undefined");
+        //     // web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));  // MetaMask
+        // } else {
+        //     console.log("web3.providers: ", web3.providers);
+        //     console.log("web3 currentProvider: ", web3.currentProvider);
+        //     web3 = new Web3(web3.currentProvider);
+        // }
+
+        /**
+         * Ganache
+         */
+        web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); // Ganache
+
+        window.addEventListener('load', function () {
+            // console.log('load');
+            getCurrentMainAddress();
+            loaded();
+        });
+
+        function getCurrentMainAddress() {
+            web3.eth.getAccounts((err, accs) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+
+                if (accs.length == 0) {
+                    console.warn("No accounts or not logged in");
+                    return;
+                }
+
+                // console.log("address: ", accs);
+            });
+
+        }
+    </script>
+
+    <script type="text/javascript" src="blockchain-model.js"></script>
+    <script>
+        let calculatorContract = new CalculatorModel().build();
+
+
+        function loaded() {
+            calculatorContract.lastResult.call((err, res) => {
+                if (err) {
+                    console.error(err);
+                    return;
+                }
+                // console.log("lastResult: ", res);
+                document.getElementById("lastValue").innerText = res;
+            });
+        }
+
+        function inputsValid(aValue, bValue) {
+            let a = document.getElementById("firstInput").value;
+            let b = document.getElementById("secondInput").value;
+
+            if (a.length == 0 || isNaN(a)) {
+                console.error("wrong a");
+                return false;
+            }
+
+            if (b.length == 0 || isNaN(b)) {
+                console.error("wrong b");
+                return false;
+            }
+
+            return true;
+        }
+
+
+        /**
+         * Blockchain
+         */
+
+        function plus() {
+            console.log("plus");
+
+            let a = document.getElementById("firstInput").value;
+            let b = document.getElementById("secondInput").value;
+
+            if (inputsValid(a, b)) {
+                calculatorContract.plus(a, b, {
+                    from: web3.eth.accounts[0]
+                });
+            }
+        }
+
+        function minus() {
+            console.log("minus");
+
+            let a = document.getElementById("firstInput").value;
+            let b = document.getElementById("secondInput").value;
+
+            if (inputsValid(a, b)) {
+                if (a < b) {
+                    console.error("a must be > b");
+                    return;
+                }
+
+                calculatorContract.minus(a, b, {
+                    from: web3.eth.accounts[0]
+                });
+            }
+        }
+
+        function multiply() {
+            console.log("multiply");
+
+            let a = document.getElementById("firstInput").value;
+            let b = document.getElementById("secondInput").value;
+
+            if (inputsValid(a, b)) {
+                calculatorContract.multiply(a, b, {
+                    from: web3.eth.accounts[0]
+                });
+            }
+        }
+
+        function divide() {
+            console.log("divide");
+
+            let a = document.getElementById("firstInput").value;
+            let b = document.getElementById("secondInput").value;
+
+            if (inputsValid(a, b)) {
+                calculatorContract.divide(a, b, {
+                    from: web3.eth.accounts[0]
+                });
+            }
+        }
+
+
+        /**
+         * Events
+         */
+
+        var event = calculatorContract.Plus(function (error, result) {
+            if (error) {
+                console.erorr(error);
+                return;
+            }
+            document.getElementById("lastValue").innerText = result.args._result;
+
+        });
+
+        calculatorContract.Minus(function (error, result) {
+            if (error) {
+                console.erorr(error);
+                return;
+            }
+            document.getElementById("lastValue").innerText = result.args._result;
+
+        });
+
+        calculatorContract.Multiply(function (error, result) {
+            if (error) {
+                console.erorr(error);
+                return;
+            }
+            document.getElementById("lastValue").innerText = result.args._result;
+
+        });
+
+        calculatorContract.Divide(function (error, result) {
+            if (error) {
+                console.erorr(error);
+                return;
+            }
+            document.getElementById("lastValue").innerText = result.args._result;
+
+        });
+    </script>
+</head>
+
+<body>
+
+    <h1>zos upgradable calculator</h1>
+
+    <div>
+        <span>Last value: </span>
+        <span id="lastValue" style="font-weight: bold; color: crimson">...</span>
+    </div>
+
+    <div style="margin-top: 20px">
+        <h3>operations</h3>
+        <input id="firstInput" placeholder="first input updated text">
+        <span id="operation" style="margin-left: 10px; margin-right: 10px">...</span>
+        <input id="secondInput" placeholder="second input">
+        <div style="margin-top: 20px">
+            <button onclick="plus()">+</button>
+            <button style="margin-left: 10px; margin-right: 10px" onclick="minus()">-</button>
+            <button onclick="multiply()">*</button>
+            <button style="margin-left: 10px;" onclick="divide()">/</button>
+        </div>
+    </div>
+
+</body>
+
+</html>

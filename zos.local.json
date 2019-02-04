@@ -1,0 +1,27 @@
+{
+  "contracts": {
+    "Calculator": {
+      "address": "0x5fed1e33d2efb6a4157b42e3ce14232ffaa48bb5",
+      "bytecodeHash": "fdff8f2d6bcd08f85ad2eb98476c55a49a8995ab22631ea2fa326c2807aeec9e"
+    }
+  },
+  "proxies": {
+    "Calculator": [
+      {
+        "address": "0x3379a06bd2e69856937cbab1776ab3084af7f142",
+        "version": "0.1.0",
+        "implementation": "0x5fed1e33d2efb6a4157b42e3ce14232ffaa48bb5"
+      }
+    ]
+  },
+  "app": {
+    "address": "0xa560c82fa62e033e5beb61ff6c68e4c5b35ff516"
+  },
+  "version": "0.1.0",
+  "package": {
+    "address": "0xa966f79e2b4783ac7a0a65eea7c082c95d272d7c"
+  },
+  "provider": {
+    "address": "0x76251881d525a0d985a86952ab9a8bcf50975cfb"
+  }
+}

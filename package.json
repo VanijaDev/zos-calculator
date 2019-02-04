@@ -1,0 +1,29 @@
+{
+  "name": "zos-calculator",
+  "version": "1.0.0",
+  "description": "simple calculator with upgradable smart contracts",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VanijaDev/zos-calculator.git"
+  },
+  "keywords": [
+    "Ethereum",
+    "zos",
+    "smart",
+    "contract",
+    "calculator"
+  ],
+  "author": "Ivan Solomichev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VanijaDev/zos-calculator/issues"
+  },
+  "homepage": "https://github.com/VanijaDev/zos-calculator#readme",
+  "dependencies": {
+    "zos-lib": "^1.0.0"
+  }
+}

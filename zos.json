@@ -1,0 +1,7 @@
+{
+  "name": "zos-calculator",
+  "version": "0.1.0",
+  "contracts": {
+    "Calculator": "Calculator"
+  }
+}
